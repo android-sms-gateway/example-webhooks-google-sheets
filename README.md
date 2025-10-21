@@ -136,6 +136,9 @@ The script expects webhook payloads from SMSGate in the following format:
 - **Data not appearing**: Check that your webhook URL is correct and accessible
 - **Authorization errors**: Re-deploy the web app with proper permissions
 - **Column mismatch**: Verify your headers match exactly: "Timestamp", "From", "Message", "DeviceID", "MessageID"
+- **Duplicate messages in sheet**: If you notice the same SMS message being logged multiple times, this occurs because Google Apps Script returns a 302 redirect for POST requests. SMSGate retries webhook delivery on non-2xx responses. To fix:
+    - Option 1: Set "Retry count" to 1 in SMSGate settings ([Settings → Webhooks → Retry count](https://docs.sms-gate.app/features/webhooks/#step-5-receive-the-payload))
+    - Option 2: Implement deduplication in your Apps Script using the unique `messageId` from the webhook payload
 
 <p align="right"><a href="#readme-top">back to top</a></p>
 
